@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Ferretería El Greco - Directorio</title>
+    <meta name="theme-color" content="#FFB842">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-principal: #FFB842;
+            --color-principal-hover: #E6A73B;
+            --color-secundario: #5C5C5C;
+            --color-fondo: #FFFFFF;
+            --color-texto: #333333;
+            --color-claro: #F8F8F8;
+            --color-header-bg: transparent;
+            --color-naranja-oscuro: #A96500;
+            --color-borde: #EAEAEA;
+            --color-superficie: #FFFFFF;
+            --sombra-tarjeta: 0 18px 55px rgba(35, 35, 35, 0.09);
+            --radio-grande: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background:
+                radial-gradient(
+                    ellipse at 50% 0%,
+                    rgba(255, 184, 66, 0.12) 0%,
+                    rgba(255, 184, 66, 0.035) 35%,
+                    transparent 70%
+                ),
+                var(--color-fondo);
+            color: var(--color-texto);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0 20px 35px;
+            text-align: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            width: calc(100% + 40px);
+            background-color: var(--color-header-bg);
+            padding: 25px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.045);
+            position: relative;
+        }
+
+        .header-img {
+            display: block;
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            transition: none;
+        }
+
+        .header-img:hover {
+            transform: none;
+        }
+
+        .header-lang-container {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-lang-button {
+            background-color: var(--color-principal);
+            border: 1px solid rgba(169, 101, 0, 0.12);
+            color: #382400;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            cursor: pointer;
+            font-size: 1.4em;
+            line-height: 1;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(230, 167, 59, 0.22);
+            transition:
+                background-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .header-lang-button:hover {
+            background-color: var(--color-principal-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(230, 167, 59, 0.3);
+        }
+
+        .header-lang-button:focus-visible,
+        .dropdown-link:focus-visible {
+            outline: 3px solid #7C5000;
+            outline-offset: 3px;
+        }
+
+        .header-lang-dropdown {
+            background-color: var(--color-superficie);
+            border: 1px solid var(--color-borde);
+            padding: 14px;
+            text-align: left;
+            box-shadow: var(--sombra-tarjeta);
+            min-width: 180px;
+            display: none;
+            margin-top: 10px;
+            border-radius: 14px;
+            animation: aparecer 0.2s ease;
+        }
+
+        .dropdown-language-label {
+            color: var(--color-secundario);
+            font-size: 0.78em;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+            font-weight: 700;
+        }
+
+        .header-lang-dropdown hr {
+            border: 0;
+            border-top: 1px solid var(--color-borde);
+            margin: 0 0 8px !important;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 10px 11px;
+            color: var(--color-texto);
+            text-decoration: none;
+            font-size: 0.9em;
+            border-radius: 8px;
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .dropdown-link:hover {
+            background-color: #FFF6E7;
+            color: var(--color-naranja-oscuro);
+        }
+
+        .dropdown-link.active {
+            color: var(--color-naranja-oscuro);
+            background-color: #FFF3DC;
+            font-weight: 700;
+        }
+
+        .main-panel {
+            position: relative;
+            overflow: hidden;
+            padding: 42px 40px 30px;
+            border: 1px solid rgba(0, 0, 0, 0.045);
+            border-radius: var(--radio-grande);
+            max-width: 850px;
+            width: 100%;
+            margin-top: 42px;
+            background-color: var(--color-superficie);
+            box-shadow: var(--sombra-tarjeta);
+            animation: subir 0.55s ease both;
+        }
+
+        .main-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(
+                90deg,
+                #F2A62A,
+                #FFCB70,
+                #F2A62A
+            );
+        }
+
+        .main-title {
+            color: var(--color-naranja-oscuro);
+            font-size: clamp(1.7rem, 4vw, 2.2rem);
+            line-height: 1.25;
+            font-weight: 800;
+            letter-spacing: -0.045em;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .main-subtitle {
+            font-size: 1em;
+            color: var(--color-secundario);
+            line-height: 1.8;
+            margin: 0 auto 30px;
+            max-width: 600px;
+        }
+
+        #directoryContainer {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            text-align: left;
+        }
+
+        .directory-section {
+            background: var(--color-superficie);
+            border: 1px solid var(--color-borde);
+            border-radius: 13px;
+            padding: 22px 20px;
+            margin: 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.035);
+            text-align: left;
+            min-width: 0;
+            transition: none;
+        }
+
+        .directory-section:hover {
+            transform: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.035);
+            background: var(--color-superficie);
+        }
+
+        .directory-section h2 {
+            color: #3C3C3C;
+            margin: 0 0 16px;
+            font-size: 1.04em;
+            font-weight: 700;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .directory-section h2::before {
+            content: "";
+            display: block;
+            flex: 0 0 4px;
+            width: 4px;
+            min-height: 21px;
+            margin-top: 1px;
+            border-radius: 10px;
+            background-color: var(--color-principal);
+        }
+
+        .directory-section p {
+            margin: 0;
+            padding: 9px 0;
+            font-size: 0.9em;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+            border-bottom: 1px solid #F1F1F1;
+            background: transparent;
+            transition: none;
+        }
+
+        .directory-section p:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .directory-section p:first-of-type {
+            padding-top: 0;
+        }
+
+        .directory-section strong {
+            display: block;
+            color: var(--color-secundario);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .directory-section a {
+            color: var(--color-naranja-oscuro);
+            text-decoration: none;
+            overflow-wrap: anywhere;
+            font-weight: 500;
+            transition: none;
+        }
+
+        .directory-section a:hover {
+            color: var(--color-naranja-oscuro);
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 18px 0 0;
+            width: 100%;
+            max-width: 850px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--color-secundario);
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes subir {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 0 14px 25px;
+            }
+
+            .header {
+                width: calc(100% + 28px);
+                padding: 22px 65px 20px;
+            }
+
+            .header-img {
+                max-width: 205px;
+            }
+
+            .header-lang-container {
+                top: 12px;
+                right: 12px;
+            }
+
+            .header-lang-button {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                font-size: 1.2em;
+            }
+
+            .header-lang-dropdown {
+                min-width: 165px;
+            }
+
+            .main-panel {
+                margin-top: 24px;
+                padding: 34px 21px 24px;
+                border-radius: 16px;
+            }
+
+            .main-title {
+                margin-bottom: 12px;
+            }
+
+            .main-subtitle {
+                font-size: 0.94em;
+                line-height: 1.75;
+                margin-bottom: 24px;
+            }
+
+            #directoryContainer {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .directory-section {
+                padding: 19px 17px;
+            }
+
+            .directory-section h2 {
+                font-size: 1em;
+            }
+
+            .directory-section p {
+                font-size: 0.88em;
+            }
+
+            footer {
+                margin-top: 24px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-lang-container">
+        <button
+            class="header-lang-button"
+            onclick="toggleDropdown()"
+            aria-label="Seleccionar idioma"
+            aria-controls="dropdown"
+            aria-expanded="false"
+            type="button"
+        >&#127757;</button>
+
+        <div class="header-lang-dropdown" id="dropdown">
+            <p id="languageLabel" class="dropdown-language-label">Idioma</p>
+            <hr style="margin:0;margin-bottom:5px;" />
+            <div id="langLinks"></div>
+        </div>
+    </div>
+
+    <div class="header">
+        <img
+            class="header-img"
+            src="https://www.ferreteriaelgreco.es/web/image/website/1/logo/Ferreter%C3%ADa%20el%20Greco?unique=e5ecd8b"
+            alt="Ferretería El Greco"
+        >
+    </div>
+
+    <div class="main-panel">
+        <div class="main-title" id="body_title"></div>
+        <div class="main-subtitle" id="body_subtitle"></div>
+
+        <div id="directoryContainer"></div>
+    </div>
+
+    <footer>
+        Ferretería El Greco
+    </footer>
+
+    <script>
+        const LANGUAGES = {
+            'es': 'Español',
+            'en': 'English',
+            'gl': 'Galego'
+        };
+
+        const directoryData = {
+            'es': {
+                title: "Directorio de contacto",
+                subtitle: "Canales oficiales de comunicación de Ferretería El Greco",
+                sections: [
+                    {
+                        title: "Departamento de Atención al Cliente",
+                        items: [
+                            { label: "Email general", value: "clientes@ferreteriaelgreco.es" },
+                            { label: "Email profesionales", value: "profesionales@ferreteriaelgreco.es" },
+                            { label: "Teléfono / WhatsApp", value: "988 23 15 18" }
+                        ]
+                    },
+                    {
+                        title: "Administración y Contabilidad",
+                        items: [
+                            { label: "Email", value: "administracion@ferreteriaelgreco.es" },
+                            { label: "Teléfono", value: "988 23 15 18 (sujeto a disponibilidad)" }
+                        ]
+                    },
+                    {
+                        title: "Contratación y Recursos Humanos",
+                        items: [
+                            { label: "Contratación", value: "empleo@ferreteriaelgreco.es" },
+                            { label: "Atención al empleado", value: "atempleados@ferreteriaelgreco.es" }
+                        ]
+                    },
+                    {
+                        title: "IT – Soporte de Plataformas",
+                        items: [
+                            { label: "Email", value: "soporteplataformas@ferreteriaelgreco.es" },
+                            { label: "Teléfono", value: "632 11 80 63" },
+                            { label: "Nota", value: "Canal exclusivo para clientes." }
+                        ]
+                    },
+                    {
+                        title: "Gestión de Inmuebles",
+                        items: [
+                            { label: "Email directo", value: "inmuebles@ferreteriaelgreco.es" },
+                            { label: "Nota", value: "La gestión se realiza por zonas." }
+                        ]
+                    },
+                    {
+                        title: "Departamento de Compras",
+                        items: [
+                            { label: "Nuevos proveedores", value: "propuestas@ferreteriaelgreco.es" },
+                            { label: "Proveedores activos", value: "proveedores@ferreteriaelgreco.es" }
+                        ]
+                    },
+                    {
+                        title: "Delegado de Protección de Datos (DPD)",
+                        items: [
+                            { label: "Email", value: "dpd@ferreteriaelgreco.es" }
+                        ]
+                    }
+                ]
+            },
+            'en': {
+                title: "Contact Directory",
+                subtitle: "Official communication channels of Ferretería El Greco",
+                sections: [
+                    {
+                        title: "Customer Service Department",
+                        items: [
+                            { label: "General Email", value: "clientes@ferreteriaelgreco.es" },
+                            { label: "Professionals Email", value: "profesionales@ferreteriaelgreco.es" },
+                            { label: "Phone / WhatsApp", value: "+34 988 23 15 18" }
+                        ]
+                    },
+                    {
+                        title: "Administration and Accounting",
+                        items: [
+                            { label: "Email", value: "administracion@ferreteriaelgreco.es" },
+                            { label: "Phone", value: "+34 988 23 15 18 (subject to availability)" }
+                        ]
+                    },
+                    {
+                        title: "Hiring and Human Resources",
+                        items: [
+                            { label: "Hiring", value: "empleo@ferreteriaelgreco.es" },
+                            { label: "Employee Support", value: "atempleados@ferreteriaelgreco.es" }
+                        ]
+                    },
+                    {
+                        title: "IT – Platform Support",
+                        items: [
+                            { label: "Email", value: "soporteplataformas@ferreteriaelgreco.es" },
+                            { label: "Phone", value: "+34 632 11 80 63" },
+                            { label: "Note", value: "Exclusive channel for clients." }
+                        ]
+                    },
+                    {
+                        title: "Property Management",
+                        items: [
+                            { label: "Direct Email", value: "inmuebles@ferreteriaelgreco.es" },
+                            { label: "Note", value: "Management is carried out by zones." }
+                        ]
+                    },
+                    {
+                        title: "Purchasing Department",
+                        items: [
+                            { label: "New Suppliers", value: "propuestas@ferreteriaelgreco.es" },
+                            { label: "Active Suppliers", value: "proveedores@ferreteriaelgreco.es" }
+                        ]
+                    },
+                    {
+                        title: "Data Protection Officer (DPO)",
+                        items: [
+                            { label: "Email", value: "dpd@ferreteriaelgreco.es" }
+                        ]
+                    }
+                ]
+            },
+            'gl': {
+                title: "Directorio de contacto",
+                subtitle: "Canles oficiais de comunicación de Ferretería El Greco",
+                sections: [
+                    {
+                        title: "Departamento de Atención ao Cliente",
+                        items: [
+                            { label: "Email xeral", value: "clientes@ferreteriaelgreco.es" },
+                            { label: "Email profesionais", value: "profesionales@ferreteriaelgreco.es" },
+                            { label: "Teléfono / WhatsApp", value: "988 23 15 18" }
+                        ]
+                    },
+                    {
+                        title: "Administración e Contabilidade",
+                        items: [
+                            { label: "Email", value: "administracion@ferreteriaelgreco.es" },
+                            { label: "Teléfono", value: "988 23 15 18 (suxeito a dispoñibilidade)" }
+                        ]
+                    },
+                    {
+                        title: "Contratación e Recursos Humanos",
+                        items: [
+                            { label: "Contratación", value: "empleo@ferreteriaelgreco.es" },
+                            { label: "Atención ao empregado", value: "atempleados@ferreteriaelgreco.es" }
+                        ]
+                    },
+                    {
+                        title: "IT – Soporte de Plataformas",
+                        items: [
+                            { label: "Email", value: "soporteplataformas@ferreteriaelgreco.es" },
+                            { label: "Teléfono", value: "632 11 80 63" },
+                            { label: "Nota", value: "Canle exclusiva para clientes." }
+                        ]
+                    },
+                    {
+                        title: "Xestión de Inmuebles",
+                        items: [
+                            { label: "Email directo", value: "inmuebles@ferreteriaelgreco.es" },
+                            { label: "Nota", value: "A xestión faise por zonas." }
+                        ]
+                    },
+                    {
+                        title: "Departamento de Compras",
+                        items: [
+                            { label: "Novos provedores", value: "propuestas@ferreteriaelgreco.es" },
+                            { label: "Provedores activos", value: "proveedores@ferreteriaelgreco.es" }
+                        ]
+                    },
+                    {
+                        title: "Delegado de Protección de Datos (DPD)",
+                        items: [
+                            { label: "Email", value: "dpd@ferreteriaelgreco.es" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            const button = document.querySelector('.header-lang-button');
+
+            const isClosed =
+                dropdown.style.display === 'none' ||
+                dropdown.style.display === '';
+
+            dropdown.style.display = isClosed ? 'block' : 'none';
+            button.setAttribute('aria-expanded', String(isClosed));
+        }
+
+        function setLangLinks() {
+            const langLinks = document.getElementById('langLinks');
+            langLinks.replaceChildren();
+
+            Object.keys(LANGUAGES).forEach(lang => {
+                const link = document.createElement('a');
+
+                link.href = "#";
+                link.textContent = LANGUAGES[lang];
+                link.className = 'dropdown-link';
+                link.dataset.lang = lang;
+
+                link.onclick = event => {
+                    event.preventDefault();
+
+                    renderDirectory(lang);
+
+                    document.querySelectorAll('.dropdown-link').forEach(item => {
+                        const isActive = item.dataset.lang === lang;
+
+                        item.classList.toggle('active', isActive);
+
+                        if (isActive) {
+                            item.setAttribute('aria-current', 'true');
+                        } else {
+                            item.removeAttribute('aria-current');
+                        }
+                    });
+
+                    document.getElementById('dropdown').style.display = 'none';
+
+                    document.querySelector('.header-lang-button')
+                        .setAttribute('aria-expanded', 'false');
+                };
+
+                langLinks.appendChild(link);
+            });
+        }
+
+        function renderDirectory(lang) {
+            const data = directoryData[lang];
+
+            if (!data) return;
+
+            document.documentElement.lang = lang;
+
+            document.getElementById('title').textContent = data.title;
+            document.getElementById('body_title').textContent = data.title;
+            document.getElementById('body_subtitle').textContent = data.subtitle;
+            document.getElementById('languageLabel').textContent =
+                lang === 'en' ? 'Language' : 'Idioma';
+
+            const container = document.getElementById('directoryContainer');
+            container.replaceChildren();
+
+            data.sections.forEach(section => {
+                const div = document.createElement('div');
+                div.className = 'directory-section';
+
+                const heading = document.createElement('h2');
+                heading.textContent = section.title;
+                div.appendChild(heading);
+
+                section.items.forEach(item => {
+                    const paragraph = document.createElement('p');
+                    const label = document.createElement('strong');
+
+                    label.textContent = item.label + ':';
+                    paragraph.appendChild(label);
+
+                    if (item.value.includes('@')) {
+                        const link = document.createElement('a');
+                        link.href = 'mailto:' + item.value;
+                        link.textContent = item.value;
+                        paragraph.appendChild(link);
+                    } else {
+                        paragraph.appendChild(
+                            document.createTextNode(item.value)
+                        );
+                    }
+
+                    div.appendChild(paragraph);
+                });
+
+                container.appendChild(div);
+            });
+
+            document.querySelectorAll('.dropdown-link').forEach(link => {
+                const isActive = link.dataset.lang === lang;
+
+                link.classList.toggle('active', isActive);
+
+                if (isActive) {
+                    link.setAttribute('aria-current', 'true');
+                } else {
+                    link.removeAttribute('aria-current');
+                }
+            });
+        }
+
+        window.onload = function() {
+            setLangLinks();
+            renderDirectory('es');
+        };
+
+        document.addEventListener('click', function(event) {
+            const container = document.querySelector('.header-lang-container');
+
+            if (!container.contains(event.target)) {
+                document.getElementById('dropdown').style.display = 'none';
+
+                document.querySelector('.header-lang-button')
+                    .setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('dropdown').style.display = 'none';
+
+                document.querySelector('.header-lang-button')
+                    .setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
